@@ -36,6 +36,7 @@ async def callback(request: Request):
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     msg = event.message.text
+    print(str(event))
     if "XMsgGroup" in msg and event.source.type == "group":
         msg_group("Hello, this is a broadcast message!", event.source.group_id)
         reply_text = "Broadcast message sent successfully!"
