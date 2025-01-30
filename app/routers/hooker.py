@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Request, HTTPException
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage
+from linebot.models import JoinEvent, MessageEvent, TextMessage, TextSendMessage
 import os
 from dotenv import load_dotenv
 
@@ -40,4 +40,13 @@ def handle_message(event):
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=reply_text)
+    )
+    
+@handler.add(JoinEvent)
+def handle_join(event: JoinEvent):
+    id = event.source.group_id if event.source.group_id else event.source.room_id
+    print(f"Bot has joined group/room ID: {id}")
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text="Thank you for inviting me to the group!")
     )
