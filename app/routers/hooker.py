@@ -21,12 +21,9 @@ router = APIRouter()
 # Webhook callback endpoint
 @router.post("/callback")
 async def callback(request: Request):
-    print("CHECK HOOK")
-    print(request)
     # Get request headers and body
     signature = request.headers.get("X-Line-Signature", "")
     body = await request.body()
-
     try:
         # Handle webhook body and verify signature
         handler.handle(body.decode("utf-8"), signature)
@@ -37,6 +34,7 @@ async def callback(request: Request):
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    print(event)
     # Reply with the same message
     reply_text = f"You said: {event.message.text}"
     line_bot_api.reply_message(
