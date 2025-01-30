@@ -4,7 +4,7 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 import os
 from dotenv import load_dotenv
-import routers.hooker as hooker
+from .routers.hooker import router as hooker
 
 # Load environment variables
 load_dotenv()
@@ -25,7 +25,7 @@ async def root():
     return {"status": "Server is running"}
 
 # Webhook callback endpoint
-app.include_router(hooker.router, prefix=BASE_URL)
+app.include_router(hooker, prefix=BASE_URL)
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
