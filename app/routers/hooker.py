@@ -4,6 +4,7 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import JoinEvent, MessageEvent, TextMessage, TextSendMessage
 import os
 from dotenv import load_dotenv
+from ..functions.msg_group import msg_group
 
 # Load environment variables
 load_dotenv()
@@ -34,13 +35,15 @@ async def callback(request: Request):
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    print(event)
-    # Reply with the same message
-    reply_text = f"You said: {event.message.text}"
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=reply_text)
-    )
+    msg = event.message.text
+    if "XMsgGroup" in msg and event.source.type == "group":
+        msg_group("Hello, this is a broadcast message!", event.source.group_id)
+        reply_text = "Broadcast message sent successfully!"
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=reply_text)
+        )
+    
     
 @handler.add(JoinEvent)
 def handle_join(event: JoinEvent):
