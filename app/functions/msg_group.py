@@ -18,6 +18,7 @@ def msg_group(message, target):
         targets (list or None): An array of LINE display names to broadcast the message to.
                                 If None, the message is broadcasted to all users.
     """
+    print(target)
     if target is None:
         # Send 404
         return
