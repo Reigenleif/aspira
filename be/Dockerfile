@@ -12,7 +12,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose port for FastAPI
-EXPOSE 8000
+EXPOSE 9000
 
 # Run the application
-CMD ["fastapi", "run", "--port", "8000"]
+CMD ["fastapi", "run", "--port", "9000"]
